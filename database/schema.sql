@@ -50,11 +50,16 @@ CREATE TABLE clientes_app (
   email VARCHAR(160) NOT NULL,
   telefone VARCHAR(30) NULL,
   documento VARCHAR(30) NULL,
+  origem VARCHAR(40) NOT NULL DEFAULT 'conectaplay',
+  origem_id VARCHAR(80) NULL,
+  ultimo_acesso_em DATETIME NULL,
   senha_hash VARCHAR(255) NOT NULL,
   ativo TINYINT(1) NOT NULL DEFAULT 1,
   criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY uk_cliente_empresa_email (empresa_id, email),
+  INDEX idx_cliente_empresa_documento (empresa_id, documento),
+  INDEX idx_cliente_origem (empresa_id, origem, origem_id),
   CONSTRAINT fk_clientes_empresa
     FOREIGN KEY (empresa_id) REFERENCES empresas(id)
     ON DELETE CASCADE
@@ -180,6 +185,26 @@ CREATE TABLE contratos_app (
   CONSTRAINT fk_contratos_cliente
     FOREIGN KEY (cliente_id) REFERENCES clientes_app(id)
     ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE acessos_clientes (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  empresa_id INT UNSIGNED NOT NULL,
+  cliente_id INT UNSIGNED NULL,
+  evento VARCHAR(60) NOT NULL,
+  pagina VARCHAR(180) NULL,
+  detalhes JSON NULL,
+  ip VARCHAR(45) NULL,
+  user_agent VARCHAR(255) NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_acessos_empresa_cliente (empresa_id, cliente_id, criado_em),
+  INDEX idx_acessos_empresa_evento (empresa_id, evento, criado_em),
+  CONSTRAINT fk_acessos_empresa
+    FOREIGN KEY (empresa_id) REFERENCES empresas(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_acessos_cliente
+    FOREIGN KEY (cliente_id) REFERENCES clientes_app(id)
+    ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO empresas (id, nome, slug, cor_primaria, cor_secundaria)

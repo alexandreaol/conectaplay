@@ -17,6 +17,11 @@ async function bootLogin() {
   const company = await api('empresas.php');
   document.querySelector('#companyName').textContent = company.empresa.nome;
 
+  api('eventos.php', {
+    method: 'POST',
+    body: JSON.stringify({ evento: 'page_view', pagina: 'login' }),
+  }).catch(() => {});
+
   const form = document.querySelector('#loginForm');
   const message = document.querySelector('#loginMessage');
 

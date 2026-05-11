@@ -99,6 +99,11 @@ async function bootHome() {
       body: JSON.stringify({ parceiro_id: Number(link.dataset.partner) }),
     }).catch(() => {});
   });
+
+  api('eventos.php', {
+    method: 'POST',
+    body: JSON.stringify({ evento: 'page_view', pagina: 'home' }),
+  }).catch(() => {});
 }
 
 bootHome().catch((error) => {

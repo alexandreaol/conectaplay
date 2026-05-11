@@ -120,6 +120,11 @@ async function loadDashboard() {
   orders.innerHTML = pedidosData.pedidos.length
     ? pedidosData.pedidos.map(orderItem).join('')
     : '<p class="empty-state">Nenhum pedido aberto.</p>';
+
+  api('eventos.php', {
+    method: 'POST',
+    body: JSON.stringify({ evento: 'page_view', pagina: 'dashboard' }),
+  }).catch(() => {});
 }
 
 document.querySelector('#paymentsList').addEventListener('click', async (event) => {

@@ -3,12 +3,52 @@
 declare(strict_types=1);
 
 require __DIR__ . '/../config/tenant.php';
+require __DIR__ . '/../config/via_ccm.php';
 
 try {
     $auth = require_login();
 
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         json_response(['erro' => 'Metodo nao permitido.'], 405);
+    }
+
+    $localClient = local_client_origin((int) $auth['tenant']['id'], $auth['cliente_id']);
+
+    if (($localClient['origem'] ?? '') === 'via_ccm' && !empty($localClient['origem_id'])) {
+        $contract = via_ccm_find_contract((int) $localClient['origem_id']);
+        $stmt = db()->prepare(
+            'SELECT id, nome, email, telefone, documento
+               FROM clientes_app
+              WHERE id = :cliente_id
+                AND empresa_id = :empresa_id
+              LIMIT 1'
+        );
+        $stmt->execute([
+            'cliente_id' => $auth['cliente_id'],
+            'empresa_id' => $auth['tenant']['id'],
+        ]);
+        $client = $stmt->fetch();
+
+        json_response([
+            'cliente' => [
+                'id' => (int) $client['id'],
+                'nome' => $client['nome'],
+                'email' => $client['email'],
+                'telefone' => $client['telefone'],
+                'documento' => $client['documento'],
+            ],
+            'internet' => [
+                'plano' => $contract['plano'] ?? 'Plano nao informado',
+                'velocidade_download' => isset($contract['download']) ? $contract['download'] . ' Mbps' : null,
+                'velocidade_upload' => isset($contract['upload']) ? $contract['upload'] . ' Mbps' : null,
+                'status' => $contract['status_contrato'] ?? 'sem_contrato',
+                'endereco_instalacao' => null,
+                'vencimento_dia' => isset($contract['dia_vencimento']) ? (int) $contract['dia_vencimento'] : null,
+                'suporte_whatsapp' => null,
+                'numero_contrato' => $contract['numero'] ?? null,
+                'status_provisionamento' => $contract['status_provisionamento'] ?? null,
+            ],
+        ]);
     }
 
     $stmt = db()->prepare(

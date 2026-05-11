@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require __DIR__ . '/../config/tenant.php';
+require __DIR__ . '/../config/via_ccm.php';
 
 try {
     $auth = require_login();
@@ -28,6 +29,29 @@ try {
         ]);
 
         json_response(['ok' => true, 'id' => (int) db()->lastInsertId()], 201);
+    }
+
+    $localClient = local_client_origin((int) $auth['tenant']['id'], $auth['cliente_id']);
+
+    if (($localClient['origem'] ?? '') === 'via_ccm' && !empty($localClient['origem_id'])) {
+        $payments = array_map(static function (array $item): array {
+            return [
+                'id' => (int) $item['id'],
+                'descricao' => $item['referencia'] ?: ucfirst((string) $item['tipo_recebimento']),
+                'valor' => (float) $item['saldo_restante'],
+                'status' => $item['status'],
+                'vencimento' => $item['data_vencimento'],
+                'codigo_pix' => null,
+                'link_boleto' => null,
+                'pago_em' => null,
+                'criado_em' => null,
+                'origem' => 'via_ccm',
+                'numero_contrato' => $item['numero_contrato'],
+                'competencia' => $item['competencia'],
+            ];
+        }, via_ccm_open_payments((int) $localClient['origem_id']));
+
+        json_response(['pagamentos' => $payments]);
     }
 
     $stmt = db()->prepare(
