@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar | ConectaPlay</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="login-page">
+    <main class="auth-shell">
+      <a class="brand auth-brand" href="index.html" aria-label="Voltar para home">
+        <span class="brand-mark">CP</span>
+        <span>
+          <strong id="companyName">ConectaPlay</strong>
+          <small>Area do cliente</small>
+        </span>
+      </a>
+
+      <form id="loginForm" class="auth-card">
+        <span class="eyebrow">Bem-vindo</span>
+        <h1>Acesse sua conta</h1>
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email" placeholder="cliente@email.com" required>
+        </label>
+        <label>
+          Senha
+          <input type="password" name="senha" autocomplete="current-password" placeholder="Sua senha" required>
+        </label>
+        <button class="primary-btn full-btn" type="submit">Entrar</button>
+        <p id="loginMessage" class="form-message" role="status"></p>
+      </form>
+    </main>
+
+    <script src="js/auth.js"></script>
+  </body>
+</html>

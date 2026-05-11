@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard | ConectaPlay</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell dashboard-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="ConectaPlay">
+          <span class="brand-mark">CP</span>
+          <span>
+            <strong id="companyName">ConectaPlay</strong>
+            <small id="welcomeText">Minha conta</small>
+          </span>
+        </a>
+        <button id="logoutBtn" class="icon-link" type="button">Sair</button>
+      </header>
+
+      <section class="dashboard-hero">
+        <span class="eyebrow">Painel</span>
+        <h1>Resolva o essencial sem sair do app.</h1>
+      </section>
+
+      <section id="pagamentos" class="section-block">
+        <div class="section-title">
+          <h2>Pagamentos</h2>
+        </div>
+        <div id="paymentsList" class="stack-list"></div>
+      </section>
+
+      <section id="suporte" class="section-block">
+        <div class="section-title">
+          <h2>Suporte</h2>
+        </div>
+        <form id="supportForm" class="support-form">
+          <select name="tipo" aria-label="Tipo de pedido">
+            <option value="suporte">Suporte tecnico</option>
+            <option value="beneficio">Beneficio</option>
+            <option value="financeiro">Financeiro</option>
+          </select>
+          <textarea name="mensagem" rows="4" placeholder="Descreva sua solicitacao" required></textarea>
+          <button class="primary-btn full-btn" type="submit">Enviar pedido</button>
+          <p id="supportMessage" class="form-message" role="status"></p>
+        </form>
+        <div id="ordersList" class="stack-list"></div>
+      </section>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
