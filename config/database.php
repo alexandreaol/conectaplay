@@ -13,7 +13,7 @@ return [
     'port' => getenv('CP_DB_PORT') ?: '3306',
     'database' => getenv('CP_DB_NAME') ?: 'u308598921_conecta_play',
     'username' => getenv('CP_DB_USER') ?: 'u308598921_conecta_play',
-    'password' => getenv('CP_DB_PASS') ?: '',
+    'password' => getenv('CP_DB_PASS') ?: 'Mesmox400#',
     'charset' => 'utf8mb4',
     'options' => [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
