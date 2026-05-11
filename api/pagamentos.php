@@ -31,7 +31,7 @@ try {
     }
 
     $stmt = db()->prepare(
-        'SELECT id, descricao, valor, status, vencimento, pago_em, criado_em
+        'SELECT id, descricao, valor, status, vencimento, codigo_pix, link_boleto, pago_em, criado_em
            FROM pagamentos_app
           WHERE empresa_id = :empresa_id
             AND cliente_id = :cliente_id

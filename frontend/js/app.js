@@ -46,7 +46,7 @@ function videoCard(video) {
     <article class="media-card">
       <img src="${image}" alt="">
       <div>
-        <span>${video.categoria || 'Trailer'} • ${duration}</span>
+        <span>${video.categoria || 'Trailer'} - ${duration}</span>
         <h3>${video.titulo}</h3>
         <p>${video.descricao || ''}</p>
       </div>
