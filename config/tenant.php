@@ -10,7 +10,7 @@ function db(): PDO
         return $pdo;
     }
 
-    $config = require __DIR__ . '/database.php';
+    $config = require_once __DIR__ . '/database.php';
     $dsn = sprintf(
         'mysql:host=%s;port=%s;dbname=%s;charset=%s',
         $config['host'],
